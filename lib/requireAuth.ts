@@ -1,18 +1,10 @@
 import { redirect } from "next/navigation";
 import { getAuthUser } from "./getAuthUser";
+import { AuthUser } from "./types/auth";
 
-export type  AuthUser = {
-    _id: string;
-    email: string;
-    role: 'user' | 'admin';
-    createdAt: string;
-    avatar?: string;
-}
-
-export async function requireAuth() {
-    const user = await getAuthUser({source: 'cookie'}) as AuthUser;
+export async function requireAuth(): Promise<AuthUser> {
+    const user = await getAuthUser('cookie');
     
-    // console.log('========requireAuth=========' + user.email + '==' + user.role + '==' + user.createdAt + '');
     if (!user) {
         redirect('/login');
     }

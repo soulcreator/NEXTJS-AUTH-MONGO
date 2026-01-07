@@ -1,5 +1,10 @@
+/**
+ * User data used in UI components
+ * Safe to expose
+ */
+
 export type User = {
-    _id: string;
+    id: string;
     email: string;
     role: 'user' | 'admin';
     createdAt: string;

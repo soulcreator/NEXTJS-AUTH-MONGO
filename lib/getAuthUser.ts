@@ -1,26 +1,15 @@
 import { cookies, headers } from "next/headers";
 import { verifyToken } from "./auth";
-import User from "./models/User";
+import { AuthUser } from "./types/auth";
 
-export type AuthUser = {
-    _id: string;
-    email: string;
-    role: 'user' | 'admin';
-    createdAt: string;
-    avatar?: string;
-};
-
-type GetAuthUserOptions = {
-    source?: 'cookie' | 'header';
-};
 
 export async function getAuthUser(
-    options: GetAuthUserOptions = { source: 'cookie'}
+    source: 'cookie' | 'header' = 'cookie'
 ): Promise<AuthUser | null> {
     try {
         let token: string | undefined;
 
-        if (options.source === 'header') {
+        if (source === 'header') {
             const authHeader = (await headers()).get('authorization');
             token = authHeader?.replace('Bearer', '');
         } else {
@@ -30,9 +19,7 @@ export async function getAuthUser(
             return null;
         }
 
-        const authTokenPayload = verifyToken(token);
-        
-        return await User.findOne({ authTokenPayload }) as AuthUser;
+        return verifyToken(token);
     } catch {
         return null;
     }
