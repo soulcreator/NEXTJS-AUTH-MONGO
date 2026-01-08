@@ -1,5 +1,4 @@
 import mongoose, { models, Schema } from "mongoose";
-//todo models目录放在lib下还是单独拿出来比较合理
 const UserSchema = new Schema(
     {
         email: { type: String, required: true, unique: true},
